@@ -8,6 +8,7 @@
 
 
 在线测试（使用发票照片测试）：https://leidenglai.github.io/opencv-js-qrcode/
+
 **demo源码:  [leidenglai/opencv-js-qrcode · GitHub](https://github.com/leidenglai/opencv-js-qrcode)**
 
 ## 加载二维码识别引擎
@@ -54,29 +55,35 @@ async function loadModels() {
 
 ## 识别二维码
 因为demo特定需求，发票二维码基本在左上角，所以在canvas加载图片时只截取左上角图片，提高引擎识别效率。
-![](CleanShot%202022-05-23%20at%2017.24.28@2x.png)
+<img width="562" alt="CleanShot 2022-05-23 at 17 24 28@2x" src="https://user-images.githubusercontent.com/11383747/169796294-993433c3-3e97-46a9-8651-8fd76152ca27.png">
 
 OpenCV识别结果：
-![](CleanShot%202022-05-23%20at%2017.26.12@2x.png)
+![CleanShot 2022-05-23 at 17 26 12@2x](https://user-images.githubusercontent.com/11383747/169796337-7ba2a129-b357-41b8-a8a9-20484a9b30c8.png)
 将二维码信息和二维码区域都正确的处理，OpenCV耗时: 224.42822265625 ms。
+
 而jsqr是处理不了这样的图片的。
 
+
 **识别旋转的二维码**
-![](CleanShot%202022-05-23%20at%2017.28.48@2x.png)
+![CleanShot 2022-05-23 at 17 28 48@2x](https://user-images.githubusercontent.com/11383747/169796380-f85584a5-b8a9-45ca-94ff-80dabc786225.png)
 照片被旋转了90度且不太清晰，同样也被正确的处理，OpenCV耗时: 169.523193359375 ms。
+
 jsqr也不能处理这样的图片。
 
+
+
 **电子二维码识别：**
-![](CleanShot%202022-05-23%20at%2017.32.11@2x.png)
-电子版的发票图片都正确的识别了；OpenCV耗时: 165.333984375 ms，QRjs耗时: 44.613037109375 ms。QRjs的效率相对也会高一些。
+![CleanShot 2022-05-23 at 17 32 11@2x](https://user-images.githubusercontent.com/11383747/169796414-ae279015-dc5e-42f1-af7b-6b085a2b22f8.png)
+电子版的发票图片都正确的识别了；OpenCV耗时: 165.333984375 ms，QRjs耗时: 44.613037109375 ms。不过QRjs的效率相对会高一些。
 
 
 ## 浏览器兼容性：
 暨WebAssembly兼容性，基本上现代浏览器都是支持的：
-![](CleanShot%202022-05-23%20at%2017.16.35@2x.png)****
+<img width="789" alt="CleanShot 2022-05-23 at 17 16 35@2x" src="https://user-images.githubusercontent.com/11383747/169796444-07af908a-48a6-448f-b458-56175ad2576d.png">
 
 ## 总结
 OpenCV因为需要加入wechat_qrcode组件，所以必须使用自定义编译。需要在本地搭建c++的编译环境，是前端基本不曾涉足的领域，相对较为繁琐，也会有一些困难，但这也让前端具备了更强大的本领，由于WebAssembly的存在，前端也有了更多的可能。
+
 总之，由于前端越强大，我们能做的事也越多，挑战也会越大，大家共勉。
 
 ## 参考
