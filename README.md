@@ -12,7 +12,7 @@
 
 ## 加载二维码识别引擎
 本文中采用的是自定义编译的opencv库，添加了三方组件wechat_qrcode微信二维码引擎，并且去掉不需要的库。
-开始找了很多”强大的二维码识别库“，结果发现基本都不识别照片，或者失败率低，只能识别标准的qrcode。后来发现c++的opencv并且可编译为wsam版本。由于没有任何c++基础，在将wechat_qrcode编译进opencv时异常痛苦，好在后来找到一篇blog：[编译微信二维码引擎到webAssembly实践 | 虚幻](https://qwertyyb.github.io/2021/06/19/%E7%BC%96%E8%AF%91%E5%BE%AE%E4%BF%A1%E4%BA%8C%E7%BB%B4%E7%A0%81%E5%BC%95%E6%93%8E%E5%88%B0webAssembly%E5%AE%9E%E8%B7%B5/) ，感谢qwertyyb。
+开始找了很多”强大的二维码识别库“，结果发现基本都不识别照片，或者失败率低，只能识别标准的qrcode。后来发现c++的opencv并且可编译为wsam版本。由于没有任何c++基础，在将wechat_qrcode编译进opencv时异常痛苦，好在后来找到一篇blog：编译微信二维码引擎到webAssembly实践 | 虚幻 ，感谢qwertyyb。
 
 在编译好OpenCV后，导出opencv.js，文件比较大进过优化大约有5
 M，所以使用时需要异步加载。opencv加载后就能通过window.cv调用到opencv的相关方法；此时并不意味着我们能正常运行使用了，因为我们还需要加载二维码扫码引擎的模型文件：
@@ -78,5 +78,11 @@ jsqr也不能处理这样的图片。
 ## 总结
 OpenCV因为需要加入wechat_qrcode组件，所以必须使用自定义编译。需要在本地搭建c++的编译环境，是前端基本不曾涉足的领域，相对较为繁琐，也会有一些困难，但这也让前端具备了更强大的本领，由于WebAssembly的存在，前端也有了更多的可能。
 总之，由于前端越强大，我们能做的事也越多，挑战也会越大，大家共勉。
+
+## 参考
+[编译微信二维码引擎到webAssembly实践 | 虚幻](https://qwertyyb.github.io/2021/06/19/%E7%BC%96%E8%AF%91%E5%BE%AE%E4%BF%A1%E4%BA%8C%E7%BB%B4%E7%A0%81%E5%BC%95%E6%93%8E%E5%88%B0webAssembly%E5%AE%9E%E8%B7%B5/) 
+OpenCV: https://github.com/opencv/opencv
+OpenCV’s contrib: https://github.com/opencv/opencv_contrib
+
 
 
