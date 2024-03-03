@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "target": "es6",
+    "module": "ESNext",
+    "strict": true,
+
+    "declaration": true,
+    "outDir": "./dist/",
+
+    "useDefineForClassFields": true,
+    "noImplicitAny": false,
+    "allowSyntheticDefaultImports": true,
+
+    /* Bundler mode */
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": false,
+    "esModuleInterop": true,
+    "paths": {
+      "src": ["./src/"]
+    }
+  },
+  "exclude": ["./libs"],
+  "include": ["./src", "shim.d.ts"]
+}

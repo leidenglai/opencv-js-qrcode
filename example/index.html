@@ -1,160 +1,47 @@
 <!DOCTYPE html>
 
 <head>
-    <style>
-        .canvasInput-wrap {
-            width: 400px;
-        }
+  <style>
+    .canvasInput-wrap {
+      width: 400px;
+    }
 
-        #canvasInput {
-            width: 100%;
-        }
+    #canvasInput {
+      width: 100%;
+    }
 
-        #qrcodeCanvasOutput {
-            height: 120px;
-            width: 120px;
-            object-fit: contain;
-        }
-    </style>
+    #qrcodeCanvasOutput {
+      height: 120px;
+      width: 120px;
+      object-fit: contain;
+    }
+
+    #imageWrap {
+      img {
+        margin: 10px 16px;
+      }
+    }
+  </style>
+  <title>OpenCV QRcode Example</title>
 </head>
 
 <body>
-    <button id="qrcodeTryIt" disabled="true" onclick="qrcode_run()">Try it OpenCV</button><br>
-    <button id="qrcodeTryItJS" disabled="true" onclick="qrcode_run_qrjs()">Try it QRjs</button><br>
-    <div id="status"></div>
-    <hr>
-    <input type="file" id="fileInput" name="file" />
-    <hr>
-    <div id="qrcodeResult"><label for="">OpenCV QRCode:</label><span></span></div>
-    <div id="qrcodeResultQRjs"><label for="">QRjs QRCode:</label><span></span></div>
-    <div id="qrcodeShowcase">
-        <div>
-            <div class="canvasInput-wrap">
-                <canvas id="canvasInput"></canvas>
-            </div>
-        </div>
-        <hr>
-        <div>
-            <label for="">OpenCV QRCode image:</label>
-            <br />
-            <canvas id="qrcodeCanvasOutput"></canvas>
-        </div>
+  <input type="file" id="fileInput" name="file" />
+  <hr />
+  <div id="qrcodeShowcase">
+    <div>
+      <div class="canvasInput-wrap">
+        <canvas id="canvasInput"></canvas>
+      </div>
     </div>
-
-    <script src="./jsqr.js"></script>
-    <script src="./utils.js"></script>
-
-    <script>
-        let qrcode_detector = undefined;
-        const OPENCV_URL = "./opencv.js";
-        const utils = new Utils();
-
-        utils.loadScript(OPENCV_URL).then(
-            () =>
-            {
-                loadModels();
-            },
-            () =>
-            {
-                utils.printError("Failed to load " + OPENCV_URL);
-            }
-        );
-
-        function updateStatus(text)
-        {
-            document.getElementById("status").innerHTML = text;
-        }
-
-        async function loadModels()
-        {
-            const detect_proto = "detect.prototxt";
-            const detect_weight = "detect.caffemodel";
-            const sr_proto = "sr.prototxt";
-            const sr_weight = "sr.caffemodel";
-
-            if (qrcode_detector != undefined) {
-                updateStatus("Model Existed");
-            } else {
-                const dp = await utils.fetchModelsData(detect_proto);
-                const dw = await utils.fetchModelsData(detect_weight);
-                const sp = await utils.fetchModelsData(sr_proto);
-                const sw = await utils.fetchModelsData(sr_weight);
-
-                cv.FS_createDataFile("/", "detect.prototxt", dp, true, false, false);
-                cv.FS_createDataFile("/", "detect.caffemodel", dw, true, false, false);
-                cv.FS_createDataFile("/", "sr.prototxt", sp, true, false, false);
-                cv.FS_createDataFile("/", "sr.caffemodel", sw, true, false, false);
-
-                qrcode_detector = new cv.wechat_qrcode_WeChatQRCode(
-                    "detect.prototxt",
-                    "detect.caffemodel",
-                    "sr.prototxt",
-                    "sr.caffemodel"
-                );
-                updateStatus("OpenCV Model Created");
-            }
-        }
-
-        function qrcode_run()
-        {
-            console.time("OpenCV耗时");
-            let inputImage = cv.imread("canvasInput", cv.IMREAD_GRAYSCALE);
-            let points_vec = new cv.MatVector();
-            let res = qrcode_detector.detectAndDecode(inputImage, points_vec);
-
-            console.log('opencv识别结果:', res.get(0));
-            if (res.size() !== 0) {
-                document.querySelector("#qrcodeResult span").innerHTML = res.get(0);
-
-                let points = points_vec.get(0);
-                let x = points.floatAt(0);
-                let y = points.floatAt(1);
-                let width = points.floatAt(4) - points.floatAt(0);
-                let height = points.floatAt(5) - points.floatAt(1);
-                let rect = new cv.Rect(x, y, width, height);
-                dst = inputImage.roi(rect);
-                cv.imshow("qrcodeCanvasOutput", dst);
-            }
-            console.timeEnd("OpenCV耗时");
-        }
-
-        function qrcode_run_qrjs()
-        {
-            console.time("QRjs耗时");
-            const canvas = document.getElementById("canvasInput");
-            const ctx = canvas.getContext("2d");
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const qrInfo = jsQR(imageData.data, imageData.width, imageData.height);
-
-            console.log('qrjs识别结果:', qrInfo);
-            if (qrInfo) {
-                document.querySelector("#qrcodeResultQRjs span").innerHTML = qrInfo.data;
-            }
-            console.timeEnd("QRjs耗时");
-        }
-
-        utils.loadImageToCanvas("./img/1.JPG", "canvasInput");
-
-        let fileInputElement = document.getElementById("fileInput");
-        fileInputElement.addEventListener("change", qrcodeHandleFiles, false);
-        function qrcodeHandleFiles(e)
-        {
-            const file = e.target.files[0];
-            const qrcodeUrl = URL.createObjectURL(file);
-            utils.loadImageToCanvas(qrcodeUrl, "canvasInput");
-        }
-
-        function onReady()
-        {
-            document.getElementById("qrcodeTryIt").disabled = false;
-            document.getElementById("qrcodeTryItJS").disabled = false;
-        }
-        if (typeof cv !== "undefined") {
-            onReady();
-        } else {
-            document.getElementById("opencvjs").onload = onReady;
-        }
-
-    </script>
-
+    <hr />
+    <button id="qrcodeTryIt">Try it OpenCV</button><br />
+    <div id="status-wrap">识别结果:<span id="status"></span></div>
+    <hr />
+    <div>
+      <label for="">OpenCV QRCode image:</label>
+      <br />
+      <div id="imageWrap"></div>
+    </div>
+  </div>
 </body>

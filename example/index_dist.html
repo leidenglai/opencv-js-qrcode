@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+
+<head>
+  <style>
+    .canvasInput-wrap {
+      width: 400px;
+    }
+
+    #canvasInput {
+      width: 100%;
+    }
+
+    #qrcodeCanvasOutput {
+      height: 120px;
+      width: 120px;
+      object-fit: contain;
+    }
+    #imageWrap {
+      img {
+        margin: 10px 16px;
+      }
+    }
+  </style>
+  <title>OpenCV QRcode</title>
+</head>
+
+<body>
+  <input type="file" id="fileInput" name="file" />
+  <hr />
+  <div id="qrcodeShowcase">
+    <div>
+      <div class="canvasInput-wrap">
+        <canvas id="canvasInput"></canvas>
+      </div>
+    </div>
+    <hr />
+    <button id="qrcodeTryIt">Try it OpenCV</button><br />
+    <div id="status-wrap">识别结果:<span id="status"></span></div>
+    <hr />
+    <div>
+      <label for="">OpenCV QRCode image:</label>
+      <br />
+      <div id="imageWrap"></div>
+    </div>
+  </div>
+  <script src="../dist/OpencvQr.js"></script>
+  <script>
+    const cvQr = new OpencvQr({
+      dw: "http://127.0.0.1:8080/models/detect.caffemodel",
+      sw: "http://127.0.0.1:8080/models/sr.caffemodel",
+    });
+
+    function loadImageToCanvas(url, cavansId) {
+      let canvas = document.getElementById(cavansId);
+      let ctx = canvas.getContext("2d");
+      let img = new Image();
+
+      img.crossOrigin = "anonymous";
+      img.onload = function () {
+        const { width, height } = img;
+
+        canvas.width = width;
+        canvas.height = height;
+        ctx?.drawImage(img, 0, 0, width, height);
+      };
+      img.src = url;
+    }
+
+    function imagedataToImage(imagedata) {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = imagedata.width;
+      canvas.height = imagedata.height;
+      ctx.putImageData(imagedata, 0, 0);
+
+      const image = new Image();
+
+      image.src = canvas.toDataURL();
+      return image;
+    }
+
+    document.getElementById("qrcodeTryIt")?.addEventListener("click", () => {
+      const result = cvQr.load("canvasInput");
+
+      const infos = result?.getInfos();
+      document.getElementById("status").innerText = JSON.stringify(infos);
+
+      const images = result?.getImages();
+      // 识别的imageData填充页面
+      images?.forEach((imgData) => {
+        const image = imagedataToImage(imgData);
+
+        document.getElementById("imageWrap").append(image);
+      });
+    });
+
+    function qrcodeHandleFiles(e) {
+      const file = e.target.files[0];
+      const qrcodeUrl = URL.createObjectURL(file);
+
+      loadImageToCanvas(qrcodeUrl, "canvasInput");
+    }
+    let fileInputElement = document.getElementById("fileInput");
+
+    fileInputElement?.addEventListener("change", qrcodeHandleFiles, false);
+  </script>
+</body>
