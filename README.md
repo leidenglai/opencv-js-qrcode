@@ -56,7 +56,7 @@ const cvQr = new OpencvQr({
 OpencvQr暴露一个加载方法和三个使用方法, 支持typescript类型 OpencvQr.d.ts
 
 ``` javascript
-  // 初始化时需自行加载模型文件，模型文件请自行保存，需静态加载，不可编译转换
+  // 初始化时需自行加载模型文件，模型文件请自行保存为静态文件，不可编译转换
   const cvQr = new OpencvQr({
     dw: "http://xxx.com/models/detect.caffemodel",
     sw: "http://xxx.com/models/sr.caffemodel",
