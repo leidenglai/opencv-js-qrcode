@@ -6,7 +6,8 @@
     "types": "./dist/OpencvQr.d.ts",
     "license": "Apache-2.0",
     "scripts": {
-        "start": "webpack serve --mode development",
+        "static": "npx http-server -p 8081 --cors -s",
+        "start": "npm run static & webpack serve --mode development",
         "build": "webpack --mode production",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
@@ -32,6 +33,7 @@
         "@types/webpack": "^5.28.5",
         "babel-loader": "^9.1.3",
         "html-webpack-plugin": "^5.6.0",
+        "http-server": "^14.1.1",
         "ts-loader": "^9.5.1",
         "ts-node": "^10.9.2",
         "typescript": "^5.3.3",

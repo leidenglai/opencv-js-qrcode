@@ -2,8 +2,8 @@
 import OpencvQr from "../src/OpencvQr";
 
 const cvQr = new OpencvQr({
-  dw: "http://127.0.0.1:8080/models/detect.caffemodel",
-  sw: "http://127.0.0.1:8080/models/sr.caffemodel",
+  dw: "http://127.0.0.1:8081/models/detect.caffemodel",
+  sw: "http://127.0.0.1:8081/models/sr.caffemodel",
 });
 
 function loadImageToCanvas(url, cavansId) {
