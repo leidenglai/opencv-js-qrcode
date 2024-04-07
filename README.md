@@ -8,7 +8,7 @@
 
 在线测试：https://leidenglai.github.io/opencv-js-qrcode/
 
-**demo源码:  [leidenglai/opencv-js-qrcode · GitHub](https://github.com/leidenglai/opencv-js-qrcode)**
+**demo code:  [leidenglai/opencv-js-qrcode Example · GitHub](https://github.com/leidenglai/opencv-js-qrcode/tree/master/example)**
 
 ## 加载二维码识别引擎
 本库中采用的是自定义编译的opencv库作为继承，添加了三方组件wechat_qrcode微信二维码引擎，并且去掉不需要的库。封装一些基本方法方便使用。
