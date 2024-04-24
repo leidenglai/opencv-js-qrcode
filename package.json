@@ -1,6 +1,6 @@
 {
     "name": "opencv-qr",
-    "version": "0.5.0",
+    "version": "0.6.0",
     "description": "You can use Opencv JS to decode QR codes in photos.",
     "main": "./dist/OpencvQr.js",
     "types": "./dist/OpencvQr.d.ts",
@@ -10,6 +10,10 @@
         "start": "npm run static & webpack serve --mode development",
         "build": "webpack --mode production",
         "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "prettier": {
+      "printWidth": 120,
+      "tabWidth": 2
     },
     "repository": {
         "type": "git",

@@ -1,7 +1,6 @@
 import detectPrototxt from "../models/detect.prototxt";
 import spPrototxt from "../models/sr.prototxt";
-
-const opencv = require("../libs/opencv.js");
+import * as opencv from "../libs/opencv.js";
 
 /** Canvas元素Id */
 type CanvasElementId = string;
