@@ -49,6 +49,10 @@ document.getElementById("qrcodeTryIt")?.addEventListener("click", () => {
   });
 });
 
+document.getElementById("qrcodeClear")?.addEventListener("click", () => {
+  cvQr.clear();
+});
+
 function qrcodeHandleFiles(e) {
   const file = e.target.files[0];
   const qrcodeUrl = URL.createObjectURL(file);

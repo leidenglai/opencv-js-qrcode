@@ -72,6 +72,11 @@ OpencvQr暴露一个加载方法和三个使用方法, 支持typescript类型 Op
   // 返回已识别的二维码图像相对于原图的位置信息 坐标和宽高
   const sizes = result?.getSizes();
 
+  // 清除加载图片，释放内存
+  result?.clear(); 
+  // or
+  cvQr.clear();
+
 ```
 
 

@@ -45,5 +45,9 @@ declare class OpencvQr {
         w: number;
         h: number;
     }[];
+    /**
+     * 清理加载数据，释放内存
+     */
+    clear(): void;
 }
 export default OpencvQr;

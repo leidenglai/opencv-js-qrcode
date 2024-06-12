@@ -193,6 +193,19 @@ class OpencvQr {
 
     return result;
   }
+
+  /**
+   * 清理加载数据，释放内存
+   */
+  clear() {
+    this.qrVec?.delete();
+    this.qrRes?.delete();
+    this.qrImage?.delete();
+
+    this.qrVec = undefined;
+    this.qrRes = undefined;
+    this.qrImage = undefined;
+  }
 }
 
 export default OpencvQr;
