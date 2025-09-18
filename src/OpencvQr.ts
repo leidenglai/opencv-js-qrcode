@@ -51,8 +51,8 @@ class OpencvQr {
     const sr_proto = "sr.prototxt";
     const sr_weight = "sr.caffemodel";
 
-    const dwRes = await fetch(new URL(models.dw, import.meta.url));
-    const swRes = await fetch(new URL(models.sw, import.meta.url));
+    const dwRes = await fetch(new URL(models.dw));
+    const swRes = await fetch(new URL(models.sw));
 
     const [dp, dw, sp, sw] = await Promise.all([
       this.string2ArrayBuffer(detectPrototxt),
@@ -61,10 +61,22 @@ class OpencvQr {
       this.res2ArrayBuffer(swRes),
     ]);
 
-    this.cv.FS_createDataFile("/", detect_proto, dp, true, false, false);
-    this.cv.FS_createDataFile("/", detect_weight, dw, true, false, false);
-    this.cv.FS_createDataFile("/", sr_proto, sp, true, false, false);
-    this.cv.FS_createDataFile("/", sr_weight, sw, true, false, false);
+    const filesToCreate = [
+      { name: detect_proto, data: dp },
+      { name: detect_weight, data: dw },
+      { name: sr_proto, data: sp },
+      { name: sr_weight, data: sw }
+    ];
+
+    filesToCreate.forEach(({ name, data }) => {
+      try {
+        if (this.cv.FS.analyzePath(name).exists) {
+          this.cv.FS.unlink(name);
+        }
+      } catch (e) {
+      }
+      this.cv.FS_createDataFile("/", name, data, true, false, false);
+    });
 
     this.qrcode_detector = new this.cv.wechat_qrcode_WeChatQRCode(detect_proto, detect_weight, sr_proto, sr_weight);
   }
